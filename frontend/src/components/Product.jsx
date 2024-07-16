@@ -11,7 +11,7 @@ const Product = () => {
       <div className="pl-12 pt-12">
         <Link
           className="text-[14px] w-auto px-10 py-2 rounded-sm fontCera tracking-widest bg-black hover:bg-[#333] text-[#fff] fontCera mt-4"
-          to="/"
+          to="/products"
         >
           Go Back
         </Link>

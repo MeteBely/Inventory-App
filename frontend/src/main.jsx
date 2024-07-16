@@ -10,12 +10,18 @@ import {
 } from "react-router-dom";
 import Products from "./components/Products.jsx";
 import Product from "./components/Product.jsx";
+import Login from "./components/Login.jsx";
+import Users from "./components/Users.jsx";
+import User from "./components/User.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route index={true} path="/" element={<Products />} />
+      <Route index={true} path="/" element={<Login />} />
+      <Route path="/products" element={<Products />} />
       <Route path="/product/:id" element={<Product />} />
+      <Route path="/users" element={<Users />} />
+      <Route path="/user/:id" element={<User />} />
     </Route>
   )
 );
