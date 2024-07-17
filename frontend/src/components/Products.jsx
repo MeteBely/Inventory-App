@@ -1,9 +1,19 @@
-import { products } from "../product";
 import { FaEdit, FaRegPlusSquare } from "react-icons/fa";
 import { Link } from "react-router-dom";
-//<thead className="text-xs text-gray-700 text-white uppercase bg-gray-50">
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const Products = () => {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data } = await axios.get("/api/products");
+      setProducts(data);
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <section className="fontRoboto">
       <div className="pl-12 pt-12">

@@ -1,10 +1,19 @@
 import { useParams, Link } from "react-router-dom";
-import { products } from "../product.js";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Product = () => {
   const { id: productId } = useParams();
-  const product = products.find((product) => product._id === Number(productId));
-  console.log(product);
+
+  const [product, setProduct] = useState([]);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const { data } = await axios.get(`/api/products/${productId}`);
+      setProduct(data);
+    };
+
+    fetchProduct();
+  }, [productId]);
 
   return (
     <section className="bg-[#FAFBFC] fontRoboto h-screen">
