@@ -1,5 +1,5 @@
 // Personelin hangi envanteri aldığı ve Teslim alan personel yazılmayacak çünkü users'de personalde ref verdiğimiz için bu iki bilgiyi otoman bir şekilde elde etmiş olacağız.
-
+//Zimmeti daha önce kimler almış vs. bunları kayıt et.
 export const products = [
   {
     _id: 1,

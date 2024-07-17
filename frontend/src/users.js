@@ -1,3 +1,4 @@
+//unit, position gibi çok kullanılan şeyler için ayrı tablo aç ve ilişkisel olarak kullan. Daha sonra değiştirmen gerektiğinde kolay değişebilir hale gelsin.
 export const users = [
   {
     _id: 1,
