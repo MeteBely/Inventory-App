@@ -37,16 +37,4 @@ export const products = [
     submitterPersonal: "",
     returnProductDate: "",
   },
-  {
-    _id: 4,
-    type: "Disk",
-    dateOfEntry: "1 Temmuz 2021",
-    brand: "Anoma",
-    model: "Lomq",
-    serialNumber: 426952548,
-    status: "Ofiste",
-    takenProductDate: "",
-    submitterPersonal: "",
-    returnProductDate: "",
-  },
 ];
