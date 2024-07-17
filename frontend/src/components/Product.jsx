@@ -35,7 +35,7 @@ const Product = () => {
               Tip
             </div>
             <input
-              defaultValue={product.type}
+              defaultValue={product.type && product.type.type}
               className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"
             />
           </label>
@@ -53,7 +53,7 @@ const Product = () => {
               Marka
             </div>
             <input
-              defaultValue={product.brand}
+              defaultValue={product.brand && product.brand.brand}
               className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"
             />
           </label>

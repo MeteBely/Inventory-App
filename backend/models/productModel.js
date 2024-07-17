@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import typeModel from "./typeModel.js";
+import brandModel from "./brandModel.js";
 
 const productSchema = new mongoose.Schema(
   {
@@ -27,6 +29,7 @@ const productSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
+      enum: ["Depoda", "Ofiste", "Personelde"],
     },
     takeInf: [
       //Product'ı güncel ve daha önce kimlerin ne zaman vs. aldığı gibi bilgiler burada olacak.
@@ -37,7 +40,6 @@ const productSchema = new mongoose.Schema(
         },
         takenProductDate: {
           type: Date,
-          required: true,
         },
         submitterPersonal: {
           type: mongoose.Schema.Types.ObjectId,
@@ -45,7 +47,6 @@ const productSchema = new mongoose.Schema(
         },
         returnProductDate: {
           type: Date,
-          required: true,
         },
       },
     ],

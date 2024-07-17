@@ -83,10 +83,10 @@ const Products = () => {
             {products.map((product) => (
               <tr key={product._id} className="bg-white border-b">
                 <td className="px-3 py-3 min-[675px]:px-6 text-center font-medium text-gray-900 whitespace-nowrap hidden min-[900px]:table-cell">
-                  {product.type}
+                  {product.type.type}
                 </td>
                 <td className="px-1 py-3 min-[550px]:px-3 min-[675px]:px-6 text-center font-medium text-gray-900 whitespace-nowrap">
-                  {product.brand}
+                  {product.brand.brand}
                 </td>
                 <td className="px-1 py-3 min-[550px]:px-3 min-[675px]:px-6 text-center">
                   {product.model}

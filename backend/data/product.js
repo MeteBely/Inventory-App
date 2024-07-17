@@ -15,18 +15,6 @@ export const products = [
   },
   {
     _id: 2,
-    type: "Araba",
-    dateOfEntry: "8 Temmuz 2021",
-    brand: "Fiat",
-    model: "Egea",
-    serialNumber: 416252158,
-    status: "Personelde",
-    takenProductDate: "",
-    submitterPersonal: "",
-    returnProductDate: "",
-  },
-  {
-    _id: 3,
     type: "Bilgisayar",
     dateOfEntry: "5 Temmuz 2021",
     brand: "Monster",
