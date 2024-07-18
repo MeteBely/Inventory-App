@@ -4,28 +4,36 @@ import Brand from "../models/brandModel.js";
 import Type from "../models/typeModel.js";
 
 const findOrCreate = async (Model, name) => {
-  let item = await Model.findOne({ name });
+  try {
+    if (!name) {
+      throw new Error("Name is required");
+    }
 
-  if (!item) {
-    item = new Model({ name });
-    await item.save();
+    let item = await Model.findOne({ name });
+
+    if (!item) {
+      item = new Model({ name });
+      await item.save();
+    }
+    return item._id;
+  } catch (error) {
+    console.error("Error in findOrCreate: ", error);
+    throw new Error("Error in findOrCreate");
   }
-
-  return item._id;
 };
 
 const getProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({}).populate([
-    { path: "type", select: "type" },
-    { path: "brand", select: "brand" },
+    { path: "type", select: "name" },
+    { path: "brand", select: "name" },
   ]);
   res.json(products);
 });
 
 const getProductById = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id).populate([
-    { path: "type", select: "type" },
-    { path: "brand", select: "brand" },
+    { path: "type", select: "name" },
+    { path: "brand", select: "name" },
   ]);
 
   if (product) {
@@ -38,6 +46,7 @@ const getProductById = asyncHandler(async (req, res) => {
 
 const updateProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
+
   const { type, dateOfEntry, brand, model, serialNumber, status } = req.body;
 
   const brandId = await findOrCreate(Brand, brand);
@@ -50,8 +59,8 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.model = model;
     product.serialNumber = serialNumber;
     product.status = status;
-    const updatedMealKit = await mealKit.save();
-    res.status(201).json(updatedMealKit);
+    const updatedProduct = await product.save();
+    res.status(201).json(updatedProduct);
   } else {
     res.status(404);
     throw new Error("Product not found with this id");

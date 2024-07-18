@@ -1,5 +1,6 @@
 import express from "express";
 import connectDB from "./config/db.js";
+const app = express();
 import dotenv from "dotenv";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 dotenv.config();
@@ -8,7 +9,10 @@ import productRoutes from "./routes/productRoutes.js";
 
 connectDB();
 
-const app = express();
+//Body Parser
+app.use(express.json()); //req.body --> raw için
+app.use(express.urlencoded({ extended: true })); //req.body --> urlencoded için.
+// app.use(cookieParser()); //req.cookie --> cookie için.
 
 app.get("/", (req, res) => {
   res.send("Api running...");
