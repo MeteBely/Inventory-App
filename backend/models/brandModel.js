@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const brandSchema = new mongoose.Schema(
   {
-    brand: {
+    name: {
       type: String,
       required: true,
       unique: true,

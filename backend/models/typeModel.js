@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const typeSchema = new mongoose.Schema(
   {
-    type: {
+    name: {
       type: String,
       required: true,
       unique: true,

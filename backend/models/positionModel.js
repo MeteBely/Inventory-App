@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const positionSchema = new mongoose.Schema(
   {
-    position: {
+    name: {
       type: String,
       required: true,
       unique: true,
