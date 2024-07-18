@@ -67,4 +67,23 @@ const updateProduct = asyncHandler(async (req, res) => {
   }
 });
 
-export { getProductById, getProducts, updateProduct };
+const createSampleProduct = asyncHandler(async (req, res) => {
+  const highestSerialProduct = await Product.findOne()
+    .sort("-serialNumber")
+    .exec();
+  const newSerialNumber = highestSerialProduct
+    ? highestSerialProduct.serialNumber + 1
+    : 1;
+
+  const product = new Product({
+    serialNumber: newSerialNumber,
+    dateOfEntry: new Date(),
+  });
+
+  product.validateBeforeSave = false;
+
+  const sampleProduct = await product.save();
+  res.status(201).json(sampleProduct);
+});
+
+export { getProductById, getProducts, updateProduct, createSampleProduct };
