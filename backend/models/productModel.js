@@ -6,29 +6,25 @@ const productSchema = new mongoose.Schema(
   {
     type: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "Type",
     },
     dateOfEntry: {
-      type: String,
+      type: Date,
       required: true,
     },
     brand: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "Brand",
     },
     model: {
       type: String,
-      required: true,
     },
     serialNumber: {
-      type: String,
+      type: Number,
       required: true,
     },
     status: {
       type: String,
-      required: true,
       enum: ["Depoda", "Ofiste", "Personelde"],
     },
     takeInf: [

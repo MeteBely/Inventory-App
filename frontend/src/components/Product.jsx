@@ -28,12 +28,12 @@ const Product = () => {
 
   useEffect(() => {
     if (!isLoading && product) {
-      setType(product.type.name);
-      setDateOfEntry(product.dateOfEntry);
-      setBrand(product.brand.name);
-      setModel(product.model);
-      setSerialNumber(product.serialNumber);
-      setStatus(product.status);
+      setType(product.type?.name || "");
+      setDateOfEntry(product.dateOfEntry || "");
+      setBrand(product.brand?.name || "");
+      setModel(product.model || "");
+      setSerialNumber(product.serialNumber || "");
+      setStatus(product.status || "");
     }
   }, [isLoading, product]);
 
@@ -41,9 +41,9 @@ const Product = () => {
     e.preventDefault();
     const updatedProduct = {
       productId,
-      type,
+      type: type.charAt(0).toUpperCase() + type.slice(1).toLowerCase(),
       dateOfEntry,
-      brand,
+      brand: brand.charAt(0).toUpperCase() + brand.slice(1).toLowerCase(),
       model,
       serialNumber,
       status,
@@ -94,6 +94,7 @@ const Product = () => {
                     Envantere giriş tarihi
                   </div>
                   <input
+                    readOnly
                     value={dateOfEntry}
                     onChange={(e) => setDateOfEntry(e.target.value)}
                     className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"
@@ -124,6 +125,7 @@ const Product = () => {
                     Seri Numarasi
                   </div>
                   <input
+                    readOnly
                     value={serialNumber}
                     onChange={(e) => setSerialNumber(e.target.value)}
                     className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"

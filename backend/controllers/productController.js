@@ -68,22 +68,29 @@ const updateProduct = asyncHandler(async (req, res) => {
 });
 
 const createSampleProduct = asyncHandler(async (req, res) => {
-  const highestSerialProduct = await Product.findOne()
-    .sort("-serialNumber")
-    .exec();
-  const newSerialNumber = highestSerialProduct
-    ? highestSerialProduct.serialNumber + 1
-    : 1;
+  try {
+    const highestSerialProduct = await Product.findOne()
+      .sort("-serialNumber")
+      .exec();
 
-  const product = new Product({
-    serialNumber: newSerialNumber,
-    dateOfEntry: new Date(),
-  });
+    const newSerialNumber = highestSerialProduct
+      ? highestSerialProduct.serialNumber + 1
+      : 1;
 
-  product.validateBeforeSave = false;
+    const product = new Product({
+      serialNumber: newSerialNumber,
+      dateOfEntry: new Date(),
+    });
 
-  const sampleProduct = await product.save();
-  res.status(201).json(sampleProduct);
+    const sampleProduct = await product.save();
+
+    res.status(201).json(sampleProduct);
+  } catch (error) {
+    console.error("Hata oluşturulurken bir hata oluştu:", error);
+    res
+      .status(500)
+      .json({ message: "Ürün oluşturulurken bir hata oluştu", error });
+  }
 });
 
 export { getProductById, getProducts, updateProduct, createSampleProduct };
