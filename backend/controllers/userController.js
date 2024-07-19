@@ -1,5 +1,8 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import User from "../models/userModel.js";
+import Unit from "../models/unitModel.js";
+import Position from "../models/positionModel.js";
+import GraduationStatus from "../models/graduationStatusModel.js";
 
 const findOrCreate = async (Model, name) => {
   try {
@@ -52,4 +55,74 @@ const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
-export { getUsers, getUserById };
+const updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  const {
+    name,
+    surname,
+    gender,
+    birthDate,
+    maritalStatus,
+    registrationNumber,
+    identificationNumber,
+    graduationStatus,
+    unit,
+    position,
+    isWorking,
+  } = req.body;
+
+  const graduationStatusId = await findOrCreate(
+    GraduationStatus,
+    graduationStatus
+  );
+  const unitId = await findOrCreate(Unit, unit);
+  const positionId = await findOrCreate(Position, position);
+
+  if (user) {
+    user.name = name;
+    user.surname = surname;
+    user.gender = gender;
+    user.birthDate = birthDate;
+    user.maritalStatus = maritalStatus;
+    user.identificationNumber = identificationNumber;
+    user.registrationNumber = registrationNumber;
+    user.graduationStatus = graduationStatusId;
+    user.unit = unitId;
+    user.position = positionId;
+    user.isWorking = isWorking;
+    const updatedUser = await user.save();
+    res.status(201).json(updatedUser);
+  } else {
+    res.status(404);
+    throw new Error("User not found with this id");
+  }
+});
+
+const createSampleUser = asyncHandler(async (req, res) => {
+  try {
+    const highestRegistrationUser = await User.findOne()
+      .sort("-registrationNumber")
+      .exec();
+
+    const newRegistrationNumber = highestRegistrationUser
+      ? highestRegistrationUser.registrationNumber + 1
+      : 1;
+
+    const user = new User({
+      registrationNumber: newRegistrationNumber,
+      role: "IM",
+    });
+
+    const sampleUser = await user.save();
+
+    res.status(201).json(sampleUser);
+  } catch (error) {
+    console.error("Hata oluşturulurken bir hata oluştu:", error);
+    res
+      .status(500)
+      .json({ message: "User oluşturulurken bir hata oluştu", error });
+  }
+});
+
+export { getUsers, getUserById, updateUser, createSampleUser };

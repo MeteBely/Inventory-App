@@ -7,29 +7,23 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
     },
     surname: {
       type: String,
-      required: true,
     },
     gender: {
       type: String,
-      required: true,
       enum: ["M", "F"],
     },
     birthDate: {
       type: Date,
-      required: true,
     },
     identificationNumber: {
       type: Number,
-      required: true,
       unique: true,
     },
     maritalStatus: {
       type: Boolean,
-      required: true,
     },
     registrationNumber: {
       type: Number,
@@ -38,22 +32,18 @@ const userSchema = new mongoose.Schema(
     },
     graduationStatus: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "GraduationStatus",
     },
     unit: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "Unit",
     },
     position: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "Position",
     },
     isWorking: {
       type: Boolean,
-      required: true,
     },
     username: {
       type: String,
