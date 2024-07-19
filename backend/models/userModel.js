@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import Unit from "./unitModel.js";
+import GraduationStatus from "./graduationStatusModel.js";
+import Position from "./positionModel.js";
 
 const userSchema = new mongoose.Schema(
   {

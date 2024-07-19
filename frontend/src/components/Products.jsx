@@ -38,10 +38,7 @@ const Products = () => {
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Message
-          negative={true}
-          message={error?.error || error?.data?.message}
-        />
+        <Message negative={true} message={error} />
       ) : (
         <section className="fontRoboto">
           <div className="pl-12 pt-12">

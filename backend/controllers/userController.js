@@ -21,25 +21,34 @@ const findOrCreate = async (Model, name) => {
 };
 
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({}).populate([
-    { path: "unit", select: "name" },
-    { path: "position", select: "name" },
-  ]);
-  res.json(users);
+  try {
+    const users = await User.find({}).populate([
+      { path: "unit", select: "name" },
+      { path: "position", select: "name" },
+    ]);
+
+    res.json(users);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 const getUserById = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id).populate([
-    { path: "unit", select: "name" },
-    { path: "position", select: "name" },
-    { path: "graduationStatus", select: "level" },
-  ]);
+  try {
+    const user = await User.findById(req.params.id).populate([
+      { path: "unit", select: "name" },
+      { path: "position", select: "name" },
+      { path: "graduationStatus", select: "level" },
+    ]);
 
-  if (user) {
-    return res.json(product);
-  } else {
-    res.status(404);
-    throw new Error("User not found");
+    if (user) {
+      return res.json(user);
+    } else {
+      res.status(404);
+      throw new Error("User not found");
+    }
+  } catch (error) {
+    console.log(error);
   }
 });
 
