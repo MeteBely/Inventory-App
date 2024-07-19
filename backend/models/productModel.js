@@ -21,7 +21,6 @@ const productSchema = new mongoose.Schema(
     },
     serialNumber: {
       type: Number,
-      required: true,
     },
     status: {
       type: String,

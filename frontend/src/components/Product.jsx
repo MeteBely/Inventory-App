@@ -122,7 +122,6 @@ const Product = () => {
                     Seri Numarasi
                   </div>
                   <input
-                    readOnly
                     value={serialNumber}
                     onChange={(e) => setSerialNumber(e.target.value)}
                     className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"

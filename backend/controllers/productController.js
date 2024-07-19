@@ -69,16 +69,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 
 const createSampleProduct = asyncHandler(async (req, res) => {
   try {
-    const highestSerialProduct = await Product.findOne()
-      .sort("-serialNumber")
-      .exec();
-
-    const newSerialNumber = highestSerialProduct
-      ? highestSerialProduct.serialNumber + 1
-      : 1;
-
     const product = new Product({
-      serialNumber: newSerialNumber,
       dateOfEntry: new Date(),
     });
 
