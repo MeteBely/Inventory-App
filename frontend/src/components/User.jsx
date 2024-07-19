@@ -1,11 +1,72 @@
 import { useParams, Link } from "react-router-dom";
-import { useGetUserDetailsQuery } from "../slices/usersApiSlice";
+import {
+  useGetUserDetailsQuery,
+  useUpdateUserDetailsMutation,
+} from "../slices/usersApiSlice";
 import Loader from "./Loader";
 import Message from "./Message.jsx";
+import { useEffect, useState } from "react";
 
 const User = () => {
   const { id: userId } = useParams();
-  const { data: user, isLoading, error } = useGetUserDetailsQuery(userId);
+  const {
+    data: user,
+    isLoading,
+    error,
+    refetch,
+  } = useGetUserDetailsQuery(userId);
+  const [updateUser, { isLoading: loadingUpdate }] =
+    useUpdateUserDetailsMutation();
+
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [gender, setGender] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [identificationNumber, setIdentificationNumber] = useState("");
+  const [maritalStatus, setMaritalStatus] = useState("");
+  const [registrationNumber, setRegistrationNumber] = useState("");
+  const [graduationStatus, setGraduationStatus] = useState("");
+  const [unit, setUnit] = useState("");
+  const [position, setPosition] = useState("");
+  const [isWorking, setIsWorking] = useState("");
+
+  useEffect(() => {
+    if (!isLoading && user) {
+      setName(user.name || "");
+      setSurname(user.surname || "");
+      setGender(user.gender || "");
+      setBirthDate(user.birthDate || "");
+      setIdentificationNumber(user.identificationNumber || "");
+      setMaritalStatus(user.maritalStatus || "");
+      setGraduationStatus(user.graduationStatus?.level || "");
+      setRegistrationNumber(user.registrationNumber || "");
+      setUnit(user.unit?.name || "");
+      setPosition(user.position?.name || "");
+      setIsWorking(user.isWorking || "");
+    }
+  }, [isLoading, user]);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const updatedUser = {
+      userId,
+      name,
+      surname,
+      gender,
+      birthDate,
+      identificationNumber,
+      maritalStatus,
+      registrationNumber,
+      graduationStatus,
+      unit,
+      position,
+      isWorking,
+    };
+    await updateUser(updatedUser);
+    refetch();
+    console.log("submit");
+  };
+
   return (
     <>
       {isLoading ? (
@@ -27,14 +88,18 @@ const User = () => {
               Personel Bilgileri
             </h1>
             <img src="" alt="" />
-            <div className="flex flex-row items-start justify-center gap-20 border border-[#E5E7EB] rounded-md px-2 py-4 bg-white">
+            <form
+              onSubmit={(e) => submitHandler(e)}
+              className="flex flex-row items-start justify-center gap-20 border border-[#E5E7EB] rounded-md px-2 py-4 bg-white"
+            >
               <div className="w-[380px] flex flex-col gap-4">
                 <label className="block w-full">
                   <div className="text-[15px] text-gray-600 fontCera font-semibold">
                     Ad
                   </div>
                   <input
-                    defaultValue={user.name}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"
                   />
                 </label>
@@ -43,7 +108,8 @@ const User = () => {
                     Soyad
                   </div>
                   <input
-                    defaultValue={user.surname}
+                    value={surname}
+                    onChange={(e) => setSurname(e.target.value)}
                     className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"
                   />
                 </label>
@@ -52,7 +118,8 @@ const User = () => {
                     Cinsiyet
                   </div>
                   <input
-                    defaultValue={user.gender}
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
                     className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"
                   />
                 </label>
@@ -61,7 +128,8 @@ const User = () => {
                     Doğum Tarihi
                   </div>
                   <input
-                    defaultValue={user.birthDate}
+                    value={birthDate}
+                    onChange={(e) => setBirthDate(e.target.value)}
                     className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"
                   />
                 </label>
@@ -70,7 +138,8 @@ const User = () => {
                     Medeni Durumu
                   </div>
                   <input
-                    defaultValue={user.maritalStatus}
+                    value={maritalStatus}
+                    onChange={(e) => setMaritalStatus(e.target.value)}
                     className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"
                   />
                 </label>
@@ -79,7 +148,8 @@ const User = () => {
                     Kimlik Numarasi
                   </div>
                   <input
-                    defaultValue={user.identificationNumber}
+                    value={identificationNumber}
+                    onChange={(e) => setIdentificationNumber(e.target.value)}
                     className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"
                   />
                 </label>
@@ -90,7 +160,9 @@ const User = () => {
                     Sicil Numarasi
                   </div>
                   <input
-                    defaultValue={user.registrationNumber}
+                    readOnly
+                    value={registrationNumber}
+                    onChange={(e) => setRegistrationNumber(e.target.value)}
                     className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"
                   />
                 </label>
@@ -99,7 +171,8 @@ const User = () => {
                     Mezuniyet Durumu
                   </div>
                   <input
-                    defaultValue={user.graduationStatus?.level}
+                    value={graduationStatus}
+                    onChange={(e) => setGraduationStatus(e.target.value)}
                     className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"
                   />
                 </label>
@@ -108,16 +181,18 @@ const User = () => {
                     Birim
                   </div>
                   <input
-                    defaultValue={user.unit?.name}
+                    value={unit}
+                    onChange={(e) => setUnit(e.target.value)}
                     className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"
                   />
                 </label>
                 <label className="block w-full">
                   <div className="text-[15px] text-gray-600 fontCera font-semibold">
-                    Görev
+                    Pozisyon
                   </div>
                   <input
-                    defaultValue={user.position?.name}
+                    value={position}
+                    onChange={(e) => setPosition(e.target.value)}
                     className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"
                   />
                 </label>
@@ -126,7 +201,8 @@ const User = () => {
                     Aktif Çalişma Durumu
                   </div>
                   <input
-                    defaultValue={user.isWorking}
+                    value={isWorking}
+                    onChange={(e) => setIsWorking(e.target.value)}
                     className="w-full h-10 rounded border-b outline-none px-2 fontCera focus:border-black"
                   />
                 </label>
@@ -137,7 +213,7 @@ const User = () => {
                   ONAYLA
                 </button>
               </div>
-            </div>{" "}
+            </form>{" "}
           </div>
         </section>
       )}

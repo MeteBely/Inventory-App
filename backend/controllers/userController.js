@@ -56,46 +56,52 @@ const getUserById = asyncHandler(async (req, res) => {
 });
 
 const updateUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id);
+  try {
+    const user = await User.findById(req.params.id);
 
-  const {
-    name,
-    surname,
-    gender,
-    birthDate,
-    maritalStatus,
-    registrationNumber,
-    identificationNumber,
-    graduationStatus,
-    unit,
-    position,
-    isWorking,
-  } = req.body;
+    const {
+      name,
+      surname,
+      gender,
+      birthDate,
+      maritalStatus,
+      registrationNumber,
+      identificationNumber,
+      graduationStatus,
+      unit,
+      position,
+      isWorking,
+    } = req.body;
 
-  const graduationStatusId = await findOrCreate(
-    GraduationStatus,
-    graduationStatus
-  );
-  const unitId = await findOrCreate(Unit, unit);
-  const positionId = await findOrCreate(Position, position);
+    const graduationStatusWithId = await GraduationStatus.findOne({
+      level: graduationStatus,
+    });
 
-  if (user) {
-    user.name = name;
-    user.surname = surname;
-    user.gender = gender;
-    user.birthDate = birthDate;
-    user.maritalStatus = maritalStatus;
-    user.identificationNumber = identificationNumber;
-    user.registrationNumber = registrationNumber;
-    user.graduationStatus = graduationStatusId;
-    user.unit = unitId;
-    user.position = positionId;
-    user.isWorking = isWorking;
-    const updatedUser = await user.save();
-    res.status(201).json(updatedUser);
-  } else {
-    res.status(404);
-    throw new Error("User not found with this id");
+    console.log(graduationStatusWithId);
+
+    const unitId = await findOrCreate(Unit, unit);
+    const positionId = await findOrCreate(Position, position);
+
+    if (user) {
+      user.name = name;
+      user.surname = surname;
+      user.gender = gender;
+      user.birthDate = birthDate;
+      user.maritalStatus = maritalStatus;
+      user.identificationNumber = identificationNumber;
+      user.registrationNumber = registrationNumber;
+      user.graduationStatus = graduationStatusWithId._id;
+      user.unit = unitId;
+      user.position = positionId;
+      user.isWorking = isWorking;
+      const updatedUser = await user.save();
+      res.status(201).json(updatedUser);
+    } else {
+      res.status(404);
+      throw new Error("User not found with this id");
+    }
+  } catch (error) {
+    console.log(error);
   }
 });
 

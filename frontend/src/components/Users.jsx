@@ -1,5 +1,5 @@
 import { FaEdit, FaRegPlusSquare } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdArrowForwardIos } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
 import {
@@ -14,6 +14,7 @@ import { useState } from "react";
 import { useGetUsersQuery } from "../slices/usersApiSlice";
 import Loader from "./Loader.jsx";
 import Message from "./Message.jsx";
+import { useCreateSampleUserMutation } from "../slices/usersApiSlice";
 
 const people = [
   { id: 1, name: "Yazilim Geliştirme" },
@@ -24,7 +25,11 @@ const people = [
 ];
 
 const Users = () => {
+  const navigate = useNavigate();
   const { data: users, isLoading, error } = useGetUsersQuery();
+  const [createSampleUser, { isLoading: loadingCreate }] =
+    useCreateSampleUserMutation();
+
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(people[1]);
 
@@ -34,6 +39,17 @@ const Users = () => {
       : people.filter((person) => {
           return person.name.toLowerCase().includes(query.toLowerCase());
         });
+
+  const createSampleUserHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await createSampleUser().unwrap();
+      console.log(data);
+      navigate(`/user/${data._id}`);
+    } catch (error) {
+      console.error("Error creating user:", error);
+    }
+  };
 
   return (
     <>
@@ -53,7 +69,7 @@ const Users = () => {
           </div>
           <div className="flex flex-row items-center justify-around pt-8 mb-4">
             <h2 className="text-5xl font-bold tracking-wider">Personeller</h2>
-            <button>
+            <button onClick={(e) => createSampleUserHandler(e)}>
               <FaRegPlusSquare size={60} />
             </button>
           </div>
