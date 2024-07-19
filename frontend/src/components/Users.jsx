@@ -17,11 +17,11 @@ import Message from "./Message.jsx";
 import { useCreateSampleUserMutation } from "../slices/usersApiSlice";
 
 const people = [
-  { id: 1, name: "Yazilim Geliştirme" },
-  { id: 2, name: "Arge" },
-  { id: 3, name: "Pazarlama" },
+  { id: 1, name: "Tüm Birimler" },
+  { id: 2, name: "Yazılım Geliştirme" },
+  { id: 3, name: "Arge" },
   { id: 4, name: "Guvenlik" },
-  { id: 5, name: "Bla bla bla" },
+  { id: 5, name: "Tüm Birimler" },
 ];
 
 const Users = () => {
@@ -30,8 +30,13 @@ const Users = () => {
   const [createSampleUser, { isLoading: loadingCreate }] =
     useCreateSampleUserMutation();
 
+  const [nameQuery, setNameQuery] = useState("");
+  const [surnameQuery, setSurnameQuery] = useState("");
+  const [identificationNumberQuery, setIdentificationNumberQuery] =
+    useState("");
+
   const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState(people[1]);
+  const [selected, setSelected] = useState(people[0]);
 
   const filteredPeople =
     query === ""
@@ -50,6 +55,40 @@ const Users = () => {
       console.error("Error creating user:", error);
     }
   };
+
+  const filteredUsers = users?.filter((user) => {
+    const name = user.name?.toLowerCase() || "";
+    const surname = user.surname?.toLowerCase() || "";
+    const identificationNumber = user.identificationNumber?.toString() || "";
+    const unit = user.unit?.name?.toLowerCase() || "";
+
+    // Kullanıcı girdi query'leri
+    const lowerCaseNameQuery = nameQuery.toLowerCase();
+    const lowerCaseSurnameQuery = surnameQuery.toLowerCase();
+    const lowerCaseIdentificationNumberQuery =
+      identificationNumberQuery.toString();
+    const lowerCaseUnitQuery =
+      selected?.name === "Tüm Birimler"
+        ? ""
+        : selected?.name?.toLowerCase() || "";
+
+    console.log("name:", name, "nameQuery:", lowerCaseNameQuery);
+    console.log("surname:", surname, "surnameQuery:", lowerCaseSurnameQuery);
+    console.log(
+      "identificationNumber:",
+      identificationNumber,
+      "identificationNumberQuery:",
+      lowerCaseIdentificationNumberQuery
+    );
+    console.log("unit:", unit, "unitQuery:", lowerCaseUnitQuery);
+
+    return (
+      name.includes(lowerCaseNameQuery) &&
+      surname.includes(lowerCaseSurnameQuery) &&
+      identificationNumber.includes(lowerCaseIdentificationNumberQuery) &&
+      unit.includes(lowerCaseUnitQuery)
+    );
+  });
 
   return (
     <>
@@ -79,6 +118,8 @@ const Users = () => {
                 <input
                   className="peer w-[200px] h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
                   placeholder=" "
+                  value={nameQuery}
+                  onChange={(e) => setNameQuery(e.target.value)}
                 />
                 <label className="flex w-full h-full select-none pointer-events-none absolute left-0 font-normal !overflow-visible truncate peer-placeholder-shown:text-blue-gray-500 leading-tight peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 transition-all -top-1.5 peer-placeholder-shown:text-sm text-[11px] peer-focus:text-[11px] before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 peer-placeholder-shown:before:border-transparent before:rounded-tl-md before:border-t peer-focus:before:border-t-2 before:border-l peer-focus:before:border-l-2 before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 peer-placeholder-shown:after:border-transparent after:rounded-tr-md after:border-t peer-focus:after:border-t-2 after:border-r peer-focus:after:border-r-2 after:pointer-events-none after:transition-all peer-disabled:after:border-transparent peer-placeholder-shown:leading-[3.75] text-gray-500 peer-focus:text-gray-900 before:border-blue-gray-200 peer-focus:before:!border-gray-900 after:border-blue-gray-200 peer-focus:after:!border-gray-900">
                   Ad
@@ -88,6 +129,8 @@ const Users = () => {
                 <input
                   className="peer w-[200px] h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
                   placeholder=" "
+                  value={surnameQuery}
+                  onChange={(e) => setSurnameQuery(e.target.value)}
                 />
                 <label className="flex w-full h-full select-none pointer-events-none absolute left-0 font-normal !overflow-visible truncate peer-placeholder-shown:text-blue-gray-500 leading-tight peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 transition-all -top-1.5 peer-placeholder-shown:text-sm text-[11px] peer-focus:text-[11px] before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 peer-placeholder-shown:before:border-transparent before:rounded-tl-md before:border-t peer-focus:before:border-t-2 before:border-l peer-focus:before:border-l-2 before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 peer-placeholder-shown:after:border-transparent after:rounded-tr-md after:border-t peer-focus:after:border-t-2 after:border-r peer-focus:after:border-r-2 after:pointer-events-none after:transition-all peer-disabled:after:border-transparent peer-placeholder-shown:leading-[3.75] text-gray-500 peer-focus:text-gray-900 before:border-blue-gray-200 peer-focus:before:!border-gray-900 after:border-blue-gray-200 peer-focus:after:!border-gray-900">
                   Soyad
@@ -97,6 +140,8 @@ const Users = () => {
                 <input
                   className="peer w-[200px] h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
                   placeholder=" "
+                  value={identificationNumberQuery}
+                  onChange={(e) => setIdentificationNumberQuery(e.target.value)}
                 />
                 <label className="flex w-full h-full select-none pointer-events-none absolute left-0 font-normal !overflow-visible truncate peer-placeholder-shown:text-blue-gray-500 leading-tight peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 transition-all -top-1.5 peer-placeholder-shown:text-sm text-[11px] peer-focus:text-[11px] before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 peer-placeholder-shown:before:border-transparent before:rounded-tl-md before:border-t peer-focus:before:border-t-2 before:border-l peer-focus:before:border-l-2 before:pointer-events-none before:transition-all peer-disabled:before:border-transparent after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1 peer-placeholder-shown:after:border-transparent after:rounded-tr-md after:border-t peer-focus:after:border-t-2 after:border-r peer-focus:after:border-r-2 after:pointer-events-none after:transition-all peer-disabled:after:border-transparent peer-placeholder-shown:leading-[3.75] text-gray-500 peer-focus:text-gray-900 before:border-blue-gray-200 peer-focus:before:!border-gray-900 after:border-blue-gray-200 peer-focus:after:!border-gray-900">
                   Kimlik Numarasi
@@ -196,19 +241,19 @@ const Users = () => {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
+                {filteredUsers.map((user) => (
                   <tr key={user._id} className="bg-white border-b">
                     <td className="px-3 py-3 min-[675px]:px-6 text-center font-medium text-gray-900 whitespace-nowrap hidden min-[900px]:table-cell">
                       {user.registrationNumber}
                     </td>
                     <td className="px-1 py-3 min-[550px]:px-3 min-[675px]:px-6 text-center font-medium text-gray-900 whitespace-nowrap">
-                      {user.name} {user.surname}
+                      {user.name || "-"} {user.surname}
                     </td>
                     <td className="px-1 py-3 min-[550px]:px-3 min-[675px]:px-6 text-center">
-                      {user.unit?.name}
+                      {user.unit?.name || "-"}
                     </td>
                     <td className="px-1 py-3 min-[550px]:px-3 min-[675px]:px-6 text-center">
-                      {user.position?.name}
+                      {user.position?.name || "-"}
                     </td>
                     <td className="px-1 py-3 min-[550px]:px-3min-[675px]:px-6">
                       <Link to={`/user/${user._id}`}>
