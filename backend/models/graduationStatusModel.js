@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const graduationStatusSchema = new mongoose.Schema(
   {
-    name: {
+    level: {
       type: String,
       required: true,
       unique: true,
