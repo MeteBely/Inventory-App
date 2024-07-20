@@ -5,11 +5,13 @@ import {
   getProducts,
   updateProduct,
   createSampleProduct,
+  updateProductAndUser,
 } from "../controllers/productController.js";
 
 const router = express.Router();
 
 router.route("/").get(getProducts).post(createSampleProduct);
+router.route("/userDebits").put(updateProductAndUser);
 router.route("/:id").get(getProductById).put(updateProduct);
 
 export default router;
