@@ -67,6 +67,8 @@ const User = () => {
     console.log("submit");
   };
 
+  console.log(user);
+
   return (
     <>
       {isLoading ? (

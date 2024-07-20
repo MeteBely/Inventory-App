@@ -15,6 +15,8 @@ import Product from "./components/Product.jsx";
 import Login from "./components/Login.jsx";
 import Users from "./components/Users.jsx";
 import User from "./components/User.jsx";
+import UsersDebits from "./components/UsersDebits.jsx";
+import UserDebits from "./components/UserDebits.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +26,8 @@ const router = createBrowserRouter(
       <Route path="/product/:id" element={<Product />} />
       <Route path="/users" element={<Users />} />
       <Route path="/user/:id" element={<User />} />
+      <Route path="/usersDebits" element={<UsersDebits />} />
+      <Route path="/userDebits/:id" element={<UserDebits />} />
     </Route>
   )
 );

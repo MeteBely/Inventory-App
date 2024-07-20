@@ -42,6 +42,13 @@ const getUserById = asyncHandler(async (req, res) => {
       { path: "unit", select: "name" },
       { path: "position", select: "name" },
       { path: "graduationStatus", select: "level" },
+      {
+        path: "inventory",
+        populate: [
+          { path: "type", select: "name" }, // type alanını popüle eder
+          { path: "brand", select: "name" }, // brand alanını popüle eder
+        ],
+      },
     ]);
 
     if (user) {
