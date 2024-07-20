@@ -132,7 +132,7 @@ const updateProductAndUser = asyncHandler(async (req, res) => {
       }
 
       user.inventory = user.inventory.filter(
-        (userProductId) => userProductId !== productId
+        (userProductId) => userProductId.toString() !== productId.toString()
       );
 
       await product.save();
