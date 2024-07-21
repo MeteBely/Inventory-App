@@ -1,23 +1,16 @@
 import { useParams, Link } from "react-router-dom";
 import { FaEdit, FaRegPlusSquare } from "react-icons/fa";
 import { useGetUserDetailsQuery } from "../slices/usersApiSlice";
+import {
+  useGetProductsQuery,
+  useUpdateProductAndUserMutation,
+} from "../slices/productsApiSlice.js";
 import Loader from "./Loader";
 import Message from "./Message.jsx";
 import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useState } from "react";
 
 const UserDebits = () => {
-  const [isOpenAddProduct, setIsOpenAddProduct] = useState(false);
-  const [isOpenRemoveProduct, setIsOpenRemoveProduct] = useState(false);
-
-  function closeOpenAddProduct() {
-    setIsOpenAddProduct(false);
-  }
-
-  function closeOpenRemoveProduct() {
-    setIsOpenRemoveProduct(false);
-  }
-
   const { id: userId } = useParams();
   const {
     data: user,
@@ -26,12 +19,67 @@ const UserDebits = () => {
     refetch,
   } = useGetUserDetailsQuery(userId);
 
-  const addProductToPersonHandler = () => {
-    setIsOpenAddProduct(true);
+  const {
+    data: products,
+    isLoadingProducts,
+    errorProduct,
+  } = useGetProductsQuery();
+
+  const [updateProductAndUser, { isLoading: loadingUpdate }] =
+    useUpdateProductAndUserMutation();
+
+  const availableProducts = products?.filter((product) => {
+    return product.status === "Depoda";
+  });
+
+  const [selectedAvailableProductId, setSelectedAvailableProductId] =
+    useState("");
+  const [selectedAvailableProductDate, setSelectedAvailableProductDate] =
+    useState("");
+  const [selectedRemoveProductDate, setSelectedRemoveProductDate] =
+    useState("");
+  const [selectedRemoveProductId, setSelectedRemoveProductId] = useState("");
+  const [addProductPopup, setAddProductPopup] = useState(false);
+  const [removeProductPopup, setRemoveProductPopup] = useState(false);
+
+  const closeAddProductPopup = async () => {
+    setAddProductPopup(false);
+
+    const updatedProductAndUser = {
+      productId: selectedAvailableProductId,
+      action: "add",
+      userId,
+      takenProductDate: selectedAvailableProductDate,
+    };
+    await updateProductAndUser(updatedProductAndUser);
+    refetch();
   };
 
-  const removeProductFromPersonHandler = () => {
-    setIsOpenRemoveProduct(true);
+  const closeRemoveProductPopup = async () => {
+    setRemoveProductPopup(false);
+
+    const updatedProductAndUser = {
+      productId: selectedRemoveProductId,
+      action: "remove",
+      userId,
+      returnProductDate: selectedRemoveProductDate,
+    };
+    await updateProductAndUser(updatedProductAndUser);
+    refetch();
+  };
+
+  const addProductToPersonHandler = () => {
+    setAddProductPopup(true);
+  };
+
+  const removeProductFromPersonHandler = (removableProductId) => {
+    setRemoveProductPopup(true);
+    setSelectedRemoveProductId(removableProductId._id);
+  };
+
+  const closePopup = () => {
+    setAddProductPopup(false);
+    setRemoveProductPopup(false);
   };
 
   return (
@@ -59,31 +107,51 @@ const UserDebits = () => {
             </button>
           </div>
           <Dialog
-            open={isOpenAddProduct}
+            open={addProductPopup}
             as="div"
             className="relative z-10 focus:outline-none"
-            onClose={closeOpenAddProduct}
+            onClose={closePopup}
           >
             <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
               <div className="flex min-h-full items-center justify-center p-4">
                 <DialogPanel
                   transition
-                  className="w-full max-w-md rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
+                  className="w-full max-w-md rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 border border-black"
                 >
                   <DialogTitle
                     as="h3"
                     className="text-base/7 font-medium text-black"
                   >
-                    Payment successful
+                    Add Product to User
                   </DialogTitle>
                   <p className="mt-2 text-sm/6 text-black/50">
-                    Your payment has been successfully submitted. We’ve sent you
-                    an email with all of the details of your order.
+                    <select
+                      className="mr-4"
+                      name="availableProducts"
+                      id="availableProducts"
+                      value={selectedAvailableProductId}
+                      onChange={(e) =>
+                        setSelectedAvailableProductId(e.target.value)
+                      }
+                    >
+                      {availableProducts.map((product) => (
+                        <option key={product._id} value={product._id}>
+                          {product.brand?.name} {product.type?.name}{" "}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      type="date"
+                      value={selectedAvailableProductDate}
+                      onChange={(e) =>
+                        setSelectedAvailableProductDate(e.target.value)
+                      }
+                    />
                   </p>
                   <div className="mt-4">
                     <Button
                       className="inline-flex items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-black shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
-                      onClick={closeOpenAddProduct}
+                      onClick={closeAddProductPopup}
                     >
                       Got it, thanks!
                     </Button>
@@ -93,31 +161,36 @@ const UserDebits = () => {
             </div>
           </Dialog>
           <Dialog
-            open={isOpenRemoveProduct}
+            open={removeProductPopup}
             as="div"
             className="relative z-10 focus:outline-none"
-            onClose={closeOpenRemoveProduct}
+            onClose={closePopup}
           >
             <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
               <div className="flex min-h-full items-center justify-center p-4">
                 <DialogPanel
                   transition
-                  className="w-full max-w-md rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
+                  className="w-full max-w-md rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 border border-black"
                 >
                   <DialogTitle
                     as="h3"
                     className="text-base/7 font-medium text-black"
                   >
-                    Payment successful
+                    Remove Product from User
                   </DialogTitle>
-                  <p className="mt-2 text-sm/6 text-white/50">
-                    Your payment has been successfully submitted. We’ve sent you
-                    an email with all of the details of your order.
+                  <p className="mt-2 text-sm/6 text-black/50">
+                    <input
+                      type="date"
+                      value={selectedRemoveProductDate}
+                      onChange={(e) =>
+                        setSelectedRemoveProductDate(e.target.value)
+                      }
+                    />
                   </p>
                   <div className="mt-4">
                     <Button
                       className="inline-flex items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-black shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
-                      onClick={closeOpenRemoveProduct}
+                      onClick={closeRemoveProductPopup}
                     >
                       Got it, thanks!
                     </Button>
@@ -167,7 +240,10 @@ const UserDebits = () => {
                       {product.model}
                     </td>
                     <td className="px-1 py-3 min-[550px]:px-3min-[675px]:px-6">
-                      <FaEdit onClick={removeProductFromPersonHandler} />
+                      <FaEdit
+                        className="cursor-pointer"
+                        onClick={() => removeProductFromPersonHandler(product)}
+                      />
                     </td>
                   </tr>
                 ))}
