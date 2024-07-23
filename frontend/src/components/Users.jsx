@@ -72,16 +72,6 @@ const Users = () => {
         ? ""
         : selected?.name?.toLowerCase() || "";
 
-    console.log("name:", name, "nameQuery:", lowerCaseNameQuery);
-    console.log("surname:", surname, "surnameQuery:", lowerCaseSurnameQuery);
-    console.log(
-      "identificationNumber:",
-      identificationNumber,
-      "identificationNumberQuery:",
-      lowerCaseIdentificationNumberQuery
-    );
-    console.log("unit:", unit, "unitQuery:", lowerCaseUnitQuery);
-
     return (
       name.includes(lowerCaseNameQuery) &&
       surname.includes(lowerCaseSurnameQuery) &&

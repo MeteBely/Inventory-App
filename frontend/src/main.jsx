@@ -17,17 +17,25 @@ import Users from "./components/Users.jsx";
 import User from "./components/User.jsx";
 import UsersDebits from "./components/UsersDebits.jsx";
 import UserDebits from "./components/UserDebits.jsx";
+import Home from "./components/Home.jsx";
+import AdminOrIMRoute from "./components/route-controller/adminAndIMRoute.jsx";
+import AdminOrIKRoute from "./components/route-controller/adminAndIKRoute.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index={true} path="/" element={<Login />} />
-      <Route path="/products" element={<Products />} />
-      <Route path="/product/:id" element={<Product />} />
-      <Route path="/users" element={<Users />} />
-      <Route path="/user/:id" element={<User />} />
-      <Route path="/usersDebits" element={<UsersDebits />} />
-      <Route path="/userDebits/:id" element={<UserDebits />} />
+      <Route path="/menu" element={<Home />} />
+      <Route path="" element={<AdminOrIMRoute />}>
+        <Route path="/products" element={<Products />} />
+        <Route path="/product/:id" element={<Product />} />
+      </Route>
+      <Route path="" element={<AdminOrIKRoute />}>
+        <Route path="/users" element={<Users />} />
+        <Route path="/user/:id" element={<User />} />
+        <Route path="/usersDebits" element={<UsersDebits />} />
+        <Route path="/userDebits/:id" element={<UserDebits />} />
+      </Route>
     </Route>
   )
 );
