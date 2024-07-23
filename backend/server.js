@@ -7,13 +7,14 @@ dotenv.config();
 const port = process.env.PORT || 5000;
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import cookieParser from "cookie-parser";
 
 connectDB();
 
 //Body Parser
 app.use(express.json()); //req.body --> raw için
 app.use(express.urlencoded({ extended: true })); //req.body --> urlencoded için.
-// app.use(cookieParser()); //req.cookie --> cookie için.
+app.use(cookieParser()); //req.cookie --> cookie için.
 
 app.get("/", (req, res) => {
   res.send("Api running...");

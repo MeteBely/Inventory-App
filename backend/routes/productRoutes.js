@@ -7,11 +7,18 @@ import {
   createSampleProduct,
   updateProductAndUser,
 } from "../controllers/productController.js";
+import { adminOrIK, adminOrIM, protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.route("/").get(getProducts).post(createSampleProduct);
-router.route("/userDebits").put(updateProductAndUser);
-router.route("/:id").get(getProductById).put(updateProduct);
+router
+  .route("/")
+  .get(protect, getProducts)
+  .post(protect, adminOrIM, createSampleProduct);
+router.route("/userDebits").put(protect, adminOrIK, updateProductAndUser);
+router
+  .route("/:id")
+  .get(protect, getProductById)
+  .put(protect, adminOrIM, updateProduct);
 
 export default router;

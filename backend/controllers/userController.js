@@ -3,6 +3,7 @@ import User from "../models/userModel.js";
 import Unit from "../models/unitModel.js";
 import Position from "../models/positionModel.js";
 import GraduationStatus from "../models/graduationStatusModel.js";
+import generateToken from "../utils/generateToken.js";
 
 const findOrCreate = async (Model, name) => {
   try {
@@ -22,6 +23,31 @@ const findOrCreate = async (Model, name) => {
     throw new Error("Error in findOrCreate");
   }
 };
+
+const authUser = asyncHandler(async (req, res) => {
+  const { username, password } = req.body;
+  const user = await User.findOne({ username });
+  if (user && (await user.matchPassword(password))) {
+    generateToken(user._id, res);
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      surname: user.surname,
+      role: user.role,
+    });
+  } else {
+    res.status(401);
+    throw new Error("Invalid username or password");
+  }
+});
+
+//Giriş yapmış kişi içindir, cookie'deki jwt'yi temizler.
+const logoutUser = asyncHandler(async (req, res) => {
+  res.clearCookie("jwt");
+  res.status(200).json({
+    message: "Successfully logged out",
+  });
+});
 
 const getUsers = asyncHandler(async (req, res) => {
   try {
@@ -138,4 +164,11 @@ const createSampleUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { getUsers, getUserById, updateUser, createSampleUser };
+export {
+  getUsers,
+  getUserById,
+  updateUser,
+  createSampleUser,
+  authUser,
+  logoutUser,
+};
