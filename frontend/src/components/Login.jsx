@@ -83,6 +83,7 @@ const Login = () => {
                 Şifre
               </div>
               <input
+                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full h-10 rounded border-b outline-none px-2 focus:border-black"

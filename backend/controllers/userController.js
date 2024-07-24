@@ -110,8 +110,6 @@ const updateUser = asyncHandler(async (req, res) => {
       level: graduationStatus,
     });
 
-    console.log(graduationStatusWithId);
-
     const unitId = await findOrCreate(Unit, unit);
     const positionId = await findOrCreate(Position, position);
 
