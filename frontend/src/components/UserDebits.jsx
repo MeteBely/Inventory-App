@@ -8,7 +8,8 @@ import {
 import Loader from "./Loader";
 import Message from "./Message.jsx";
 import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const UserDebits = () => {
   const { id: userId } = useParams();
@@ -16,24 +17,34 @@ const UserDebits = () => {
     data: user,
     isLoading,
     error,
-    refetch,
+    refetch: refetchUser,
   } = useGetUserDetailsQuery(userId);
 
   const {
     data: products,
     isLoadingProducts,
     errorProduct,
+    refetch: refetchProducts,
   } = useGetProductsQuery();
 
   const [updateProductAndUser, { isLoading: loadingUpdate }] =
     useUpdateProductAndUserMutation();
 
-  const availableProducts = products?.filter((product) => {
-    return product.status === "Depoda";
-  });
+  const [availableCurrentProducts, setAvailableCurrentProducts] = useState([]);
 
   const [selectedAvailableProductId, setSelectedAvailableProductId] =
     useState("");
+
+  useEffect(() => {
+    if (!isLoadingProducts && products) {
+      let availableProducts = products?.filter((product) => {
+        return product.status === "Depoda";
+      });
+      setAvailableCurrentProducts(availableProducts);
+      setSelectedAvailableProductId(availableProducts[0]?._id || "");
+    }
+  }, [isLoadingProducts, products, refetchProducts, refetchUser]);
+
   const [selectedAvailableProductDate, setSelectedAvailableProductDate] =
     useState("");
   const [selectedRemoveProductDate, setSelectedRemoveProductDate] =
@@ -43,29 +54,41 @@ const UserDebits = () => {
   const [removeProductPopup, setRemoveProductPopup] = useState(false);
 
   const closeAddProductPopup = async () => {
+    try {
+      const updatedProductAndUser = {
+        productId: selectedAvailableProductId,
+        action: "add",
+        userId,
+        takenProductDate: selectedAvailableProductDate,
+      };
+      await updateProductAndUser(updatedProductAndUser);
+      refetchProducts();
+      refetchUser();
+      toast.success("Zimmet başariyla personele eklendi!");
+    } catch (err) {
+      toast.error(err.message);
+      console.log(err);
+    }
     setAddProductPopup(false);
-
-    const updatedProductAndUser = {
-      productId: selectedAvailableProductId,
-      action: "add",
-      userId,
-      takenProductDate: selectedAvailableProductDate,
-    };
-    await updateProductAndUser(updatedProductAndUser);
-    refetch();
   };
 
   const closeRemoveProductPopup = async () => {
+    try {
+      const updatedProductAndUser = {
+        productId: selectedRemoveProductId,
+        action: "remove",
+        userId,
+        returnProductDate: selectedRemoveProductDate,
+      };
+      await updateProductAndUser(updatedProductAndUser);
+      refetchProducts();
+      refetchUser();
+      toast.success("Zimmet başariyla personelden çikarildi!");
+    } catch (err) {
+      toast.error(err.message);
+      console.log(err);
+    }
     setRemoveProductPopup(false);
-
-    const updatedProductAndUser = {
-      productId: selectedRemoveProductId,
-      action: "remove",
-      userId,
-      returnProductDate: selectedRemoveProductDate,
-    };
-    await updateProductAndUser(updatedProductAndUser);
-    refetch();
   };
 
   const addProductToPersonHandler = () => {
@@ -74,7 +97,7 @@ const UserDebits = () => {
 
   const removeProductFromPersonHandler = (removableProductId) => {
     setRemoveProductPopup(true);
-    setSelectedRemoveProductId(removableProductId._id);
+    setSelectedRemoveProductId(removableProductId?._id);
   };
 
   const closePopup = () => {
@@ -124,9 +147,9 @@ const UserDebits = () => {
                   >
                     Add Product to User
                   </DialogTitle>
-                  <p className="mt-2 text-sm/6 text-black/50">
+                  <div className="mt-2 text-sm/6 text-black/50">
                     <select
-                      className="mr-4"
+                      className="mr-4 h-[28px] border-b"
                       name="availableProducts"
                       id="availableProducts"
                       value={selectedAvailableProductId}
@@ -134,26 +157,28 @@ const UserDebits = () => {
                         setSelectedAvailableProductId(e.target.value)
                       }
                     >
-                      {availableProducts.map((product) => (
-                        <option key={product._id} value={product._id}>
-                          {product.brand?.name} {product.type?.name}{" "}
-                        </option>
-                      ))}
+                      {availableCurrentProducts &&
+                        availableCurrentProducts.map((product) => (
+                          <option key={product._id} value={product._id}>
+                            {product.brand?.name} {product.type?.name}
+                          </option>
+                        ))}
                     </select>
                     <input
+                      className="border-b"
                       type="date"
                       value={selectedAvailableProductDate}
                       onChange={(e) =>
                         setSelectedAvailableProductDate(e.target.value)
                       }
                     />
-                  </p>
+                  </div>
                   <div className="mt-4">
                     <Button
-                      className="inline-flex items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-black shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
+                      className="inline-flex items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
                       onClick={closeAddProductPopup}
                     >
-                      Got it, thanks!
+                      Onayla
                     </Button>
                   </div>
                 </DialogPanel>
@@ -180,6 +205,7 @@ const UserDebits = () => {
                   </DialogTitle>
                   <p className="mt-2 text-sm/6 text-black/50">
                     <input
+                      className="border-b"
                       type="date"
                       value={selectedRemoveProductDate}
                       onChange={(e) =>
@@ -189,10 +215,10 @@ const UserDebits = () => {
                   </p>
                   <div className="mt-4">
                     <Button
-                      className="inline-flex items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-black shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
+                      className="inline-flex items-center gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 text-white font-semibold shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
                       onClick={closeRemoveProductPopup}
                     >
-                      Got it, thanks!
+                      Onayla
                     </Button>
                   </div>
                 </DialogPanel>

@@ -15,12 +15,14 @@ const Home = () => {
 
   const logoutHandler = async (e) => {
     e.preventDefault();
-    try {
-      await logout().unwrap();
-      dispatch(clearCredentials());
-      navigate("/");
-    } catch (err) {
-      console.log(err);
+    if (window.confirm("Çikiş yapmak istediginize emin misiniz?")) {
+      try {
+        await logout().unwrap();
+        dispatch(clearCredentials());
+        navigate("/");
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -55,42 +57,44 @@ const Home = () => {
   };
 
   return (
-    <>
-      <div className="flex flex-row items-center justify-between">
-        <button className="bg-purple-700" onClick={(e) => logoutHandler(e)}>
-          HOME PAGE YAPACAGİZ LOGOUTSİDLİDSKD
+    <section className="bg-black text-white h-screen">
+      <div className="text-2xl font-bold fontRoboto flex flex-row items-center justify-between w-[90%] m-auto pt-12">
+        <button
+          className="bg-white px-2 py-1 text-[#303236] hover:bg-[#ccc]"
+          onClick={(e) => logoutHandler(e)}
+        >
+          Çikiş Yap
         </button>
         <div>
           <h2>
-            {userInfo?.name} {userInfo?.surname}
+            Kullanici Bilgileri: {userInfo?.name} {userInfo?.surname}
           </h2>
         </div>
       </div>
-
       <div className="text-4xl font-bold fontRoboto flex flex-row items-center justify-around mt-40">
         <div className="">
           <button onClick={(e) => authController(e, "PersonelYonetimi")}>
-            <h2 className="relative no-underline hover:text-[#303236] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#000000] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
+            <h2 className="relative no-underline hover:text-[#ccc] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#ddd] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
               Personel Yönetimi
             </h2>
           </button>
         </div>
         <div>
           <button onClick={(e) => authController(e, "EnvanterYonetimi")}>
-            <h2 className="relative no-underline hover:text-[#303236] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#000000] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
+            <h2 className="relative no-underline hover:text-[#ccc] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#ddd] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
               Envanter Yönetimi
             </h2>
           </button>
         </div>
         <div>
           <button onClick={(e) => authController(e, "ZimmetIslemleri")}>
-            <h2 className="relative no-underline hover:text-[#303236] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#000000] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
+            <h2 className="relative no-underline hover:text-[#ccc] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#ddd] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
               Zimmet İşlemleri
             </h2>
           </button>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 

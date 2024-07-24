@@ -36,7 +36,7 @@ const Login = () => {
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
     } catch (err) {
-      toast.error(err?.data?.message || err?.error || err);
+      toast.error("Kullanici adi veya şifre yanliş!");
     }
   };
 

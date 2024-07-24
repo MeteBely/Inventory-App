@@ -82,8 +82,6 @@ const User = () => {
     }
   };
 
-  console.log(birthDate);
-
   return (
     <>
       {isLoading ? (
