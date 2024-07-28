@@ -20,6 +20,7 @@ import UserDebits from "./components/UserDebits.jsx";
 import Home from "./components/Home.jsx";
 import AdminOrIMRoute from "./components/route-controller/adminAndIMRoute.jsx";
 import AdminOrIKRoute from "./components/route-controller/adminAndIKRoute.jsx";
+import ProductsHistory from "./components/ProductsHistory.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -35,6 +36,7 @@ const router = createBrowserRouter(
         <Route path="/user/:id" element={<User />} />
         <Route path="/usersDebits" element={<UsersDebits />} />
         <Route path="/userDebits/:id" element={<UserDebits />} />
+        <Route path="/productsHistory" element={<ProductsHistory />} />
       </Route>
     </Route>
   )

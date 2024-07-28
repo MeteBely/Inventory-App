@@ -21,12 +21,12 @@ const User = () => {
 
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState(""); // Boş string ile başlangıç
   const [surname, setSurname] = useState("");
   const [gender, setGender] = useState("");
-  const [birthDate, setBirthDate] = useState(null);
-  const [identificationNumber, setIdentificationNumber] = useState("");
+  const [birthDate, setBirthDate] = useState("");
   const [maritalStatus, setMaritalStatus] = useState(false);
+  const [identificationNumber, setIdentificationNumber] = useState("");
   const [registrationNumber, setRegistrationNumber] = useState("");
   const [graduationStatus, setGraduationStatus] = useState("");
   const [unit, setUnit] = useState("");
@@ -41,7 +41,7 @@ const User = () => {
       setBirthDate(
         user.birthDate
           ? new Date(user.birthDate).toISOString().substring(0, 10)
-          : null
+          : ""
       );
       setIdentificationNumber(user.identificationNumber || "");
       setMaritalStatus(user.maritalStatus || false);
@@ -104,7 +104,7 @@ const User = () => {
             </h1>
             <img src="" alt="" />
             <form
-              onSubmit={(e) => submitHandler(e)}
+              onSubmit={submitHandler}
               className="flex flex-row items-start justify-center gap-20 border border-[#E5E7EB] rounded-md px-2 py-4 bg-white"
             >
               <div className="w-[380px] flex flex-col gap-4">

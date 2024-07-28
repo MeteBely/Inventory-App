@@ -19,7 +19,6 @@ const Products = () => {
     e.preventDefault();
     try {
       const data = await createSampleProduct().unwrap();
-      console.log(data);
       navigate(`/product/${data._id}`);
     } catch (error) {
       console.error("Error creating product:", error);

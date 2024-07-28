@@ -27,6 +27,12 @@ const getProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({}).populate([
     { path: "type", select: "name" },
     { path: "brand", select: "name" },
+    {
+      path: "takeInf",
+      populate: [
+        { path: "userPersonel", select: "name surname registrationNumber" },
+      ],
+    },
   ]);
   res.json(products);
 });

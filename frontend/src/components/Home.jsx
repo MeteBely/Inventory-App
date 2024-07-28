@@ -53,6 +53,12 @@ const Home = () => {
       } else {
         toast.error("You are not authorized for an admin or IK!");
       }
+    } else if (target === "ZimmetGecmisi") {
+      if (userInfo.role === "admin" || userInfo.role === "IK") {
+        navigate("/productsHistory");
+      } else {
+        toast.error("You are not authorized for an admin or IK!");
+      }
     }
   };
 
@@ -71,8 +77,8 @@ const Home = () => {
           </h2>
         </div>
       </div>
-      <div className="text-4xl font-bold fontRoboto flex flex-row items-center justify-around mt-40">
-        <div className="">
+      <div className="text-4xl font-bold fontRoboto flex flex-row items-center justify-around mt-40 flex-wrap">
+        <div>
           <button onClick={(e) => authController(e, "PersonelYonetimi")}>
             <h2 className="relative no-underline hover:text-[#ccc] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#ddd] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
               Personel Yönetimi
@@ -90,6 +96,13 @@ const Home = () => {
           <button onClick={(e) => authController(e, "ZimmetIslemleri")}>
             <h2 className="relative no-underline hover:text-[#ccc] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#ddd] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
               Zimmet İşlemleri
+            </h2>
+          </button>
+        </div>
+        <div>
+          <button onClick={(e) => authController(e, "ZimmetGecmisi")}>
+            <h2 className="relative no-underline hover:text-[#ccc] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#ddd] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
+              Zimmet Geçmişi
             </h2>
           </button>
         </div>
