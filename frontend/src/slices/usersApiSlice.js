@@ -22,12 +22,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         url: USERS_URL,
       }),
       keepUnusedDataFor: 5,
+      providesTags: ["User"],
     }),
     getUserDetails: builder.query({
       query: (userId) => ({
         url: `${USERS_URL}/${userId}`,
       }),
       keepUnusedDataFor: 5,
+      providesTags: ["User"],
     }),
     updateUserDetails: builder.mutation({
       query: (data) => ({
