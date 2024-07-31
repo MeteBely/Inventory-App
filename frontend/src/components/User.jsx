@@ -88,6 +88,15 @@ const User = () => {
     }
   };
 
+  const graduationStatusArr = [
+    "Ortaokul",
+    "Lise",
+    "Lisans",
+    "Önlisans",
+    "Yüksek lisans",
+    "Doktora",
+  ];
+
   return (
     <>
       {isLoading ? (
@@ -231,11 +240,19 @@ const User = () => {
                   <div className="text-[15px] text-gray-600  font-semibold">
                     Mezuniyet Durumu
                   </div>
-                  <input
+                  <select
+                    className="w-full h-10 rounded border-b outline-none px-2  focus:border-black"
+                    name="availableProducts"
+                    id="availableProducts"
                     value={graduationStatus}
                     onChange={(e) => setGraduationStatus(e.target.value)}
-                    className="w-full h-10 rounded border-b outline-none px-2  focus:border-black"
-                  />
+                  >
+                    {graduationStatusArr.map((graduationStatus) => (
+                      <option key={graduationStatus} value={graduationStatus}>
+                        {graduationStatus}
+                      </option>
+                    ))}
+                  </select>
                 </label>
                 <label className="block w-full">
                   <div className="text-[15px] text-gray-600  font-semibold">
