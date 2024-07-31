@@ -59,7 +59,7 @@ const Product = () => {
       toast.success("Zimmet başariyla güncellendi!");
       navigate("/products");
     } catch (err) {
-      toast.error(err.message);
+      toast.error("Zimmet güncellenirken hata ile karsilasildi!");
       console.log(err);
     }
   };
@@ -146,6 +146,7 @@ const Product = () => {
                   <div className="flex space-x-4">
                     <label className="flex items-center">
                       <input
+                        disabled
                         type="radio"
                         value="Depoda"
                         checked={status === "Depoda"}
@@ -156,6 +157,7 @@ const Product = () => {
                     </label>
                     <label className="flex items-center">
                       <input
+                        disabled
                         type="radio"
                         value="Personelde"
                         checked={status === "Personelde"}
@@ -166,6 +168,7 @@ const Product = () => {
                     </label>
                     <label className="flex items-center">
                       <input
+                        disabled
                         type="radio"
                         value="Ofiste"
                         checked={status === "Ofiste"}
