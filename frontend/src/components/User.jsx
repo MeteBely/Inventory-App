@@ -56,27 +56,33 @@ const User = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const updatedUser = {
-        userId,
-        name,
-        surname,
-        gender,
-        birthDate,
-        identificationNumber,
-        maritalStatus,
-        registrationNumber,
-        graduationStatus:
-          graduationStatus.charAt(0).toUpperCase() +
-          graduationStatus.slice(1).toLowerCase(),
-        unit: unit.charAt(0).toUpperCase() + unit.slice(1).toLowerCase(),
-        position:
-          position.charAt(0).toUpperCase() + position.slice(1).toLowerCase(),
-        isWorking,
-      };
-      await updateUser(updatedUser);
-      refetch();
-      navigate("/users");
-      toast.success("Personel başasiyla güncellendi!");
+      if (isWorking === false && user.inventory?.length !== 0) {
+        toast.error(
+          "Pasif hale getirmek istediğiniz personelden zimmet eşyalarini çikartiniz!"
+        );
+      } else {
+        const updatedUser = {
+          userId,
+          name,
+          surname,
+          gender,
+          birthDate,
+          identificationNumber,
+          maritalStatus,
+          registrationNumber,
+          graduationStatus:
+            graduationStatus.charAt(0).toUpperCase() +
+            graduationStatus.slice(1).toLowerCase(),
+          unit: unit.charAt(0).toUpperCase() + unit.slice(1).toLowerCase(),
+          position:
+            position.charAt(0).toUpperCase() + position.slice(1).toLowerCase(),
+          isWorking,
+        };
+        await updateUser(updatedUser);
+        refetch();
+        navigate("/users");
+        toast.success("Personel başasiyla güncellendi!");
+      }
     } catch (err) {
       toast.error(err.message);
     }

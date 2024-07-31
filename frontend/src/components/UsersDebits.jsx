@@ -15,6 +15,7 @@ const UsersDebits = () => {
   const filteredUsers = users?.filter((user) => {
     const name = user.name?.toLowerCase() || "";
     const registrationNumber = user.registrationNumber?.toString() || "";
+    const isWorking = user.isWorking || false;
 
     // Kullanıcı girdi query'leri
     const lowerCaseNameQuery = nameQuery.toLowerCase();
@@ -22,7 +23,8 @@ const UsersDebits = () => {
 
     return (
       name.includes(lowerCaseNameQuery) &&
-      registrationNumber.includes(lowerCaseRegistrationNumberQuery)
+      registrationNumber.includes(lowerCaseRegistrationNumberQuery) &&
+      isWorking
     );
   });
 
