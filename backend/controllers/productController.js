@@ -78,6 +78,7 @@ const createSampleProduct = asyncHandler(async (req, res) => {
   try {
     const product = new Product({
       dateOfEntry: new Date(),
+      status: "Depoda",
     });
 
     const sampleProduct = await product.save();
