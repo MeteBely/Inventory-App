@@ -66,7 +66,7 @@ const UserDebits = () => {
       refetchUser();
       toast.success("Zimmet başariyla personele eklendi!");
     } catch (err) {
-      toast.error(err.message);
+      toast.error("Zimmet personele eklenirken hata ile karsilasildi!");
       console.log(err);
     }
     setAddProductPopup(false);
@@ -85,7 +85,7 @@ const UserDebits = () => {
       refetchUser();
       toast.success("Zimmet başariyla personelden çikarildi!");
     } catch (err) {
-      toast.error(err.message);
+      toast.error("Zimmet personelden cikartilirken hata ile karsilasildi!");
       console.log(err);
     }
     setRemoveProductPopup(false);

@@ -7,6 +7,7 @@ import {
 import Loader from "./Loader.jsx";
 import Message from "./Message.jsx";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,6 +23,7 @@ const Products = () => {
       navigate(`/product/${data._id}`);
     } catch (error) {
       console.error("Error creating product:", error);
+      toast.error("Zimmet olusturulurken hata ile karsilasildi!");
     }
   };
 

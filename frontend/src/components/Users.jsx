@@ -15,6 +15,7 @@ import { useGetUsersQuery } from "../slices/usersApiSlice";
 import Loader from "./Loader.jsx";
 import Message from "./Message.jsx";
 import { useCreateSampleUserMutation } from "../slices/usersApiSlice";
+import { toast } from "react-toastify";
 
 const people = [
   { id: 1, name: "Tüm Birimler" },
@@ -53,6 +54,7 @@ const Users = () => {
       navigate(`/user/${data._id}`);
     } catch (error) {
       console.error("Error creating user:", error);
+      toast.error("Personel olusturulurken hata ile karsilasildi!");
     }
   };
 

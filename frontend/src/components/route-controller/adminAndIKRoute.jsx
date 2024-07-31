@@ -21,7 +21,7 @@ const AdminRoute = () => {
           </div>
           <Message
             negative={true}
-            message="You are not authorized for an admin or IK!"
+            message="İnsan kaynaklari ya da admin olarak yetkilendirilmediniz."
           />
         </>
       )}

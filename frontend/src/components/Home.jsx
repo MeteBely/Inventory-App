@@ -22,6 +22,7 @@ const Home = () => {
         navigate("/");
       } catch (err) {
         console.log(err);
+        toast.error("Çikiş yapilirken hata ile karsilasildi!");
       }
     }
   };
@@ -39,28 +40,38 @@ const Home = () => {
       if (userInfo.role === "admin" || userInfo.role === "IK") {
         navigate("/users");
       } else {
-        toast.error("You are not authorized for an admin or IK!");
+        toast.error(
+          "İnsan kaynaklari ya da admin olarak yetkilendirilmediniz."
+        );
       }
     } else if (target === "EnvanterYonetimi") {
       if (userInfo.role === "admin" || userInfo.role === "IM") {
         navigate("/products");
       } else {
-        toast.error("You are not authorized for an admin or IM!");
+        toast.error(
+          "Envanter yönetimi ya da admin olarak yetkilendirilmediniz."
+        );
       }
     } else if (target === "ZimmetIslemleri") {
       if (userInfo.role === "admin" || userInfo.role === "IK") {
         navigate("/usersDebits");
       } else {
-        toast.error("You are not authorized for an admin or IK!");
+        toast.error(
+          "İnsan kaynaklari ya da admin olarak yetkilendirilmediniz."
+        );
       }
     } else if (target === "ZimmetGecmisi") {
       if (userInfo.role === "admin" || userInfo.role === "IK") {
         navigate("/productsHistory");
       } else {
-        toast.error("You are not authorized for an admin or IK!");
+        toast.error(
+          "İnsan kaynaklari ya da admin olarak yetkilendirilmediniz."
+        );
       }
     }
   };
+
+  console.log(userInfo);
 
   return (
     <section className="bg-black text-white h-screen">
@@ -78,34 +89,42 @@ const Home = () => {
         </div>
       </div>
       <div className="text-4xl font-bold fontRoboto flex flex-row items-center justify-around mt-40 flex-wrap">
-        <div>
-          <button onClick={(e) => authController(e, "PersonelYonetimi")}>
-            <h2 className="relative no-underline hover:text-[#ccc] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#ddd] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
-              Personel Yönetimi
-            </h2>
-          </button>
-        </div>
-        <div>
-          <button onClick={(e) => authController(e, "EnvanterYonetimi")}>
-            <h2 className="relative no-underline hover:text-[#ccc] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#ddd] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
-              Envanter Yönetimi
-            </h2>
-          </button>
-        </div>
-        <div>
-          <button onClick={(e) => authController(e, "ZimmetIslemleri")}>
-            <h2 className="relative no-underline hover:text-[#ccc] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#ddd] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
-              Zimmet İşlemleri
-            </h2>
-          </button>
-        </div>
-        <div>
-          <button onClick={(e) => authController(e, "ZimmetGecmisi")}>
-            <h2 className="relative no-underline hover:text-[#ccc] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#ddd] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
-              Zimmet Geçmişi
-            </h2>
-          </button>
-        </div>
+        {(userInfo.role === "IK" || userInfo.role === "admin") && (
+          <>
+            <div>
+              <button onClick={(e) => authController(e, "PersonelYonetimi")}>
+                <h2 className="relative no-underline hover:text-[#ccc] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#ddd] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
+                  Personel Yönetimi
+                </h2>
+              </button>
+            </div>
+            <div>
+              <button onClick={(e) => authController(e, "ZimmetIslemleri")}>
+                <h2 className="relative no-underline hover:text-[#ccc] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#ddd] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
+                  Zimmet İşlemleri
+                </h2>
+              </button>
+            </div>
+            <div>
+              <button onClick={(e) => authController(e, "ZimmetGecmisi")}>
+                <h2 className="relative no-underline hover:text-[#ccc] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#ddd] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
+                  Zimmet Geçmişi
+                </h2>
+              </button>
+            </div>
+          </>
+        )}
+        {(userInfo.role === "IM" || userInfo.role === "admin") && (
+          <>
+            <div>
+              <button onClick={(e) => authController(e, "EnvanterYonetimi")}>
+                <h2 className="relative no-underline hover:text-[#ccc] before:absolute before:block before:w-[100%] before:h-[2px] before:bottom-0 before:left-0 before:bg-[#ddd] before:scale-x-0 before:duration-300 hover:before:scale-x-100 before:origin-top-left">
+                  Envanter Yönetimi
+                </h2>
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
