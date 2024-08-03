@@ -7,11 +7,12 @@ import Loader from "./Loader.jsx";
 import { useLoginMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice.js";
 import { toast } from "react-toastify";
+import { Form, Formik } from "formik";
+import { loginSchema } from "../schemas/index.js";
+import CustomInput from "./form-components/CustomInput.jsx";
 
 const Login = () => {
   const [isHover, setIsHover] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
 
   const [login, { isLoading }] = useLoginMutation();
   const { userInfo } = useSelector((state) => state.auth);
@@ -28,18 +29,6 @@ const Login = () => {
     }
   }, [userInfo, redirect, navigate]);
 
-  //LOG IN butonuna basılırsa tetiklenir, girilen bilgiler doğru ise setCredentials ile local'e userInfo savelenir(backend endpoint'den dönen veriler ile). Var ise redirect edilir, yoksa home page'e yönlenilir.
-  const loginSubmitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await login({ username, password }).unwrap(); //promise eder
-      dispatch(setCredentials({ ...res }));
-      navigate(redirect);
-    } catch (err) {
-      toast.error("Kullanici adi veya şifre yanliş!");
-    }
-  };
-
   const handleMouseEnter = useCallback(() => {
     setIsHover(true);
   }, []);
@@ -47,6 +36,17 @@ const Login = () => {
   const handleMouseLeave = useCallback(() => {
     setIsHover(false);
   }, []);
+
+  //LOG IN butonuna basılırsa tetiklenir, girilen bilgiler doğru ise setCredentials ile local'e userInfo savelenir(backend endpoint'den dönen veriler ile). Var ise redirect edilir, yoksa home page'e yönlenilir.
+  const onSubmit = async (values, actions) => {
+    try {
+      const res = await login(values).unwrap(); //promise eder
+      dispatch(setCredentials({ ...res }));
+      navigate(redirect);
+    } catch (err) {
+      toast.error("Kullanici adi veya şifre yanliş!");
+    }
+  };
 
   return (
     <section>
@@ -67,37 +67,27 @@ const Login = () => {
           >
             HOŞ GELDİNİZ
           </h2>
-          <form onSubmit={(e) => loginSubmitHandler(e)}>
-            <label className="block w-full mb-4">
-              <div className="text-[15px] text-[#D3D3D3] font-semibold">
-                Kullanici Adi
-              </div>
-              <input
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full h-10 rounded border-b outline-none px-2 focus:border-black"
-              />
-            </label>
-            <label className="block w-full  mb-4">
-              <div className="text-[15px] text-[#D3D3D3] font-semibold">
-                Şifre
-              </div>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full h-10 rounded border-b outline-none px-2 focus:border-black"
-              />
-            </label>
-            <button
-              disabled={isLoading}
-              type="submit"
-              className="text-lg font-semibold w-full h-[47.88px] tracking-wider bg-black hover:bg-[#333] text-[#fff] mt-4"
-            >
-              GİRİŞ
-            </button>
-            {isLoading && <Loader />}
-          </form>
+          <Formik
+            initialValues={{ username: "", password: "" }}
+            onSubmit={onSubmit}
+            validationSchema={loginSchema}
+          >
+            {({ values }) => (
+              <Form className="">
+                <CustomInput label="Kullanici Adi" name="username" />
+                <br />
+                <CustomInput type="password" label="Şifre" name="password" />
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="text-lg font-semibold w-full h-[47.88px] tracking-wider bg-black hover:bg-[#333] text-[#fff] mt-4"
+                >
+                  GİRİŞ
+                </button>
+                {/* {isLoading && <Loader />} */}
+              </Form>
+            )}
+          </Formik>
         </div>
       </div>
     </section>
