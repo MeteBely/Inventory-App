@@ -54,40 +54,49 @@ const UserDebits = () => {
   const [removeProductPopup, setRemoveProductPopup] = useState(false);
 
   const closeAddProductPopup = async () => {
-    try {
-      const updatedProductAndUser = {
-        productId: selectedAvailableProductId,
-        action: "add",
-        userId,
-        takenProductDate: selectedAvailableProductDate,
-      };
-      await updateProductAndUser(updatedProductAndUser);
-      refetchProducts();
-      refetchUser();
-      toast.success("Zimmet başariyla personele eklendi!");
-    } catch (err) {
-      toast.error("Zimmet personele eklenirken hata ile karsilasildi!");
-      console.log(err);
+    if (selectedAvailableProductId && selectedAvailableProductDate) {
+      try {
+        const updatedProductAndUser = {
+          productId: selectedAvailableProductId,
+          action: "add",
+          userId,
+          takenProductDate: selectedAvailableProductDate,
+        };
+        await updateProductAndUser(updatedProductAndUser);
+        refetchProducts();
+        refetchUser();
+        toast.success("Zimmet başariyla personele eklendi!");
+      } catch (err) {
+        toast.error("Zimmet personele eklenirken hata ile karsilasildi!");
+        console.log(err);
+      }
+    } else {
+      toast.error("Zimmet edinme tarihini veya zimmeti boş birakmayiniz!");
     }
     setAddProductPopup(false);
   };
 
   const closeRemoveProductPopup = async () => {
-    try {
-      const updatedProductAndUser = {
-        productId: selectedRemoveProductId,
-        action: "remove",
-        userId,
-        returnProductDate: selectedRemoveProductDate,
-      };
-      await updateProductAndUser(updatedProductAndUser);
-      refetchProducts();
-      refetchUser();
-      toast.success("Zimmet başariyla personelden çikarildi!");
-    } catch (err) {
-      toast.error("Zimmet personelden cikartilirken hata ile karsilasildi!");
-      console.log(err);
+    if (selectedRemoveProductDate) {
+      try {
+        const updatedProductAndUser = {
+          productId: selectedRemoveProductId,
+          action: "remove",
+          userId,
+          returnProductDate: selectedRemoveProductDate,
+        };
+        await updateProductAndUser(updatedProductAndUser);
+        refetchProducts();
+        refetchUser();
+        toast.success("Zimmet başariyla personelden çikarildi!");
+      } catch (err) {
+        toast.error("Zimmet personelden cikartilirken hata ile karsilasildi!");
+        console.log(err);
+      }
+    } else {
+      toast.error("Zimmet cikarma tarihini boş birakmayiniz!");
     }
+
     setRemoveProductPopup(false);
   };
 
@@ -113,7 +122,7 @@ const UserDebits = () => {
         <Message negative={true} message={error} />
       ) : (
         <section className="fontRoboto">
-          <div className="pl-12 pt-12">
+          <div className="pl-4 pt-12">
             <Link
               className="text-[14px] w-auto px-10 py-2 rounded-sm fontCera tracking-widest bg-black hover:bg-[#333] text-[#fff] fontCera mt-4"
               to="/usersDebits"
@@ -122,11 +131,12 @@ const UserDebits = () => {
             </Link>
           </div>
           <div className="flex flex-row items-center justify-around pt-8 mb-4">
-            <h2 className="text-5xl font-bold tracking-wider">
-              Personel Zimmetleri: {user.name} {user.surname}
+            <h2 className="text-3xl lg:text-5xl font-bold tracking-wider">
+              <span className="hidden sm:inline-block mr-2">Personel:</span>
+              {user.name} {user.surname}
             </h2>
             <button onClick={(e) => addProductToPersonHandler(e)}>
-              <FaRegPlusSquare size={60} />
+              <FaRegPlusSquare className="h-12 w-12 md:h-16 md:w-16" />
             </button>
           </div>
           <Dialog
@@ -231,7 +241,7 @@ const UserDebits = () => {
                 <tr>
                   <th
                     scope="col"
-                    className="px-3 py-3 min-[675px]:px-6 text-center hidden min-[900px]:table-cell"
+                    className="px-3 py-3 min-[675px]:px-6 text-center"
                   >
                     Tip
                   </th>
@@ -256,7 +266,7 @@ const UserDebits = () => {
               <tbody>
                 {user.inventory?.map((product) => (
                   <tr key={product._id} className="bg-white border-b">
-                    <td className="px-3 py-3 min-[675px]:px-6 text-center font-medium text-gray-900 whitespace-nowrap hidden min-[900px]:table-cell">
+                    <td className="px-3 py-3 min-[675px]:px-6 text-center font-medium text-gray-900 whitespace-nowrap">
                       {product.type?.name}
                     </td>
                     <td className="px-1 py-3 min-[550px]:px-3 min-[675px]:px-6 text-center font-medium text-gray-900 whitespace-nowrap">
