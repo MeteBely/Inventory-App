@@ -14,13 +14,13 @@ const CustomInput = ({ label, ...props }) => {
         className={classNames({
           "w-full h-10 rounded border-b outline-none px-2 fontRoboto": true,
           "focus:border-black": !meta.error,
-          "focus:border-red-600": meta.error,
+          "focus:border-red-800": meta.error,
         })}
       />
       <ErrorMessage
         name={field.name}
         component={"small"}
-        className="text-sm block mt-2 text-red-200 fontRoboto"
+        className="text-sm block mt-2 text-red-400 fontRoboto"
       />
     </label>
   );

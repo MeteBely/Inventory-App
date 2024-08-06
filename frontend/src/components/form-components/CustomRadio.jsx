@@ -5,7 +5,7 @@ const CustomRadio = ({ label, disabled, options, ...props }) => {
   const [field, meta, helpers] = useField(props);
   return (
     <div className="space-y-2 border-b pb-[10px]">
-      <div className="text-md font-semibold text-gray-600 block mb-1.5">
+      <div className="text-[15px] text-[#4B5563] fontRoboto font-semibold">
         {label}
       </div>
       <div className="flex space-x-4">

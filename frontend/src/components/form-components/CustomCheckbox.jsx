@@ -17,7 +17,7 @@ const CustomCheckbox = ({ label, ...props }) => {
       >
         <FiCheck size={16} />
       </button>
-      <span className="fontCera text-[15px]">{label}</span>
+      <span className="text-[15px]">{label}</span>
     </label>
   );
 };

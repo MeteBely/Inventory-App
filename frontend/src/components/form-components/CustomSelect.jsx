@@ -4,7 +4,9 @@ const CustomSelect = ({ label, options, ...props }) => {
   const [field, meta] = useField(props);
   return (
     <label className="block w-full">
-      <div className="text-sm text-gray-600 mb-1">{label}</div>
+      <div className="text-[15px] text-[#4B5563] fontRoboto font-semibold">
+        {label}
+      </div>
       <select
         {...field}
         {...props}
