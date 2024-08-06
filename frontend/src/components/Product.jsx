@@ -56,16 +56,16 @@ const Product = () => {
         <Message negative={true} message={error} />
       ) : (
         <section className="bg-[#FAFBFC] fontRoboto h-screen">
-          <div className="pl-12 pt-12">
+          <div className="pl-4 pt-12 mb-4">
             <Link
-              className="text-[14px] w-auto px-10 py-2 rounded-sm fontCera tracking-widest bg-black hover:bg-[#333] text-[#fff] fontCera mt-4"
+              className="text-[14px] w-auto px-10 py-2 rounded-sm tracking-widest bg-black hover:bg-[#333] text-[#fff] mt-4"
               to="/products"
             >
               Go Back
             </Link>
           </div>
           <div>
-            <h1 className="text-[#303236] text-[30px] text-center mb-[6px] fontCera font-semibold">
+            <h1 className="text-[#303236] text-[30px] text-center mb-[6px] font-semibold">
               Zimmet Bilgileri
             </h1>
             <Formik

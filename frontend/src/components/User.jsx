@@ -71,9 +71,9 @@ const User = () => {
         <Message negative={true} message={error} />
       ) : (
         <section className="bg-[#FAFBFC] fontRoboto h-screen">
-          <div className="pl-12 pt-12">
+          <div className="pl-4 pt-12 mb-4">
             <Link
-              className="text-[14px] w-auto px-10 py-2 rounded-sm  tracking-widest bg-black hover:bg-[#333] text-[#fff]  mt-4"
+              className="text-[14px] w-auto px-10 py-2 rounded-sm  tracking-widest bg-black hover:bg-[#333] text-[#fff] mt-4"
               to="/users"
             >
               Go Back
@@ -104,7 +104,7 @@ const User = () => {
               validationSchema={userSchema}
             >
               {({ values }) => (
-                <Form className="flex flex-row items-start justify-center gap-20 border border-[#E5E7EB] rounded-md px-2 py-4 bg-white">
+                <Form className="flex flex-row items-start justify-center gap-12 min-[500px]:gap-20 border border-[#E5E7EB] rounded-md px-2 py-4 bg-white">
                   <div className="w-[380px] flex flex-col">
                     <CustomInput label="Ad" name="name" />
                     <br />

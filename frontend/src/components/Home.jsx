@@ -75,7 +75,7 @@ const Home = () => {
 
   return (
     <section className="bg-black text-white h-screen">
-      <div className="text-2xl font-bold fontRoboto flex flex-row items-center justify-between w-[90%] m-auto pt-12">
+      <div className="text-2xl font-bold fontRoboto flex flex-row items-center gap-6 justify-between w-[90%] m-auto pt-12">
         <button
           className="bg-white px-2 py-1 text-[#303236] hover:bg-[#ccc]"
           onClick={(e) => logoutHandler(e)}
@@ -84,11 +84,12 @@ const Home = () => {
         </button>
         <div>
           <h2>
-            Kullanici Bilgileri: {userInfo?.name} {userInfo?.surname}
+            <span className="mr-2 hidden sm:inline">Kullanici:</span>
+            {userInfo?.name} {userInfo?.surname}
           </h2>
         </div>
       </div>
-      <div className="text-4xl font-bold fontRoboto flex flex-row items-center justify-around mt-40 flex-wrap">
+      <div className="text-4xl font-bold fontRoboto flex flex-row items-center justify-around gap-12 mt-40 flex-wrap px-4">
         {(userInfo.role === "IK" || userInfo.role === "admin") && (
           <>
             <div>

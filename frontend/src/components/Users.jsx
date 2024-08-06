@@ -90,7 +90,7 @@ const Users = () => {
         <Message negative={true} message={error} />
       ) : (
         <section className="fontRoboto">
-          <div className="pl-12 pt-12">
+          <div className="pl-4 pt-12">
             <Link
               className="text-[14px] w-auto px-10 py-2 rounded-sm fontCera tracking-widest bg-black hover:bg-[#333] text-[#fff] fontCera mt-4"
               to="/"
@@ -98,17 +98,19 @@ const Users = () => {
               Go Back
             </Link>
           </div>
-          <div className="flex flex-row items-center justify-around pt-8 mb-4">
-            <h2 className="text-5xl font-bold tracking-wider">Personeller</h2>
+          <div className="flex flex-row items-center justify-around pt-8 mb-6">
+            <h2 className="text-4xl sm:text-5xl font-bold tracking-wider">
+              Personeller
+            </h2>
             <button onClick={(e) => createSampleUserHandler(e)}>
-              <FaRegPlusSquare size={60} />
+              <FaRegPlusSquare className="h-12 w-12 sm:h-16 sm:w-16" />
             </button>
           </div>
-          <div className="flex flex-row items-start justify-center gap-20">
-            <div className="flex flex-col items-center justify-center gap-10 mb-8">
-              <div className="relative w-[200px] h-10">
+          <div className="flex flex-row items-start justify-center gap-8 sm:gap-20 px-2">
+            <div className="flex flex-col items-center justify-center gap-10 min-[500px]:mb-8 mb-12">
+              <div className="relative w-[160px] min-[500px]:w-[200px] h-10">
                 <input
-                  className="peer w-[200px] h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
+                  className="peer w-[160px] min-[500px]:w-[200px] h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
                   placeholder=" "
                   value={nameQuery}
                   onChange={(e) => setNameQuery(e.target.value)}
@@ -117,9 +119,9 @@ const Users = () => {
                   Ad
                 </label>
               </div>
-              <div className="relative w-[200px] h-10">
+              <div className="relative w-[160px] min-[500px]:w-[200px] h-10">
                 <input
-                  className="peer w-[200px] h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
+                  className="peer w-[160px] min-[500px]:w-[200px] h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
                   placeholder=" "
                   value={surnameQuery}
                   onChange={(e) => setSurnameQuery(e.target.value)}
@@ -128,9 +130,9 @@ const Users = () => {
                   Soyad
                 </label>
               </div>
-              <div className="relative w-[200px] h-10">
+              <div className="relative w-[160px] min-[500px]:w-[200px] h-10">
                 <input
-                  className="peer w-[200px] h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
+                  className="peer w-[160px] min-[500px]:w-[200px] h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
                   placeholder=" "
                   value={identificationNumberQuery}
                   onChange={(e) => setIdentificationNumberQuery(e.target.value)}
@@ -189,14 +191,6 @@ const Users = () => {
                 </Combobox>
               </div>
             </div>
-            <div>
-              <button
-                type="button"
-                className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2"
-              >
-                Ara
-              </button>
-            </div>
           </div>
           <div>
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 fontCera">
@@ -204,7 +198,7 @@ const Users = () => {
                 <tr>
                   <th
                     scope="col"
-                    className="px-3 py-3 min-[675px]:px-6 text-center hidden min-[900px]:table-cell"
+                    className="px-3 py-3 min-[675px]:px-6 text-center"
                   >
                     SİCİL NUMARASI
                   </th>
@@ -222,7 +216,7 @@ const Users = () => {
                   </th>
                   <th
                     scope="col"
-                    className="px-1 py-3 min-[550px]:px-3 min-[675px]:px-6 text-center"
+                    className="px-1 py-3 min-[550px]:px-3 min-[675px]:px-6 text-center hidden md:table-cell"
                   >
                     POZİSYON
                   </th>
@@ -235,7 +229,7 @@ const Users = () => {
               <tbody>
                 {filteredUsers.map((user) => (
                   <tr key={user._id} className="bg-white border-b">
-                    <td className="px-3 py-3 min-[675px]:px-6 text-center font-medium text-gray-900 whitespace-nowrap hidden min-[900px]:table-cell">
+                    <td className="px-3 py-3 min-[675px]:px-6 text-center font-medium text-gray-900 whitespace-nowrap">
                       {user.registrationNumber}
                     </td>
                     <td className="px-1 py-3 min-[550px]:px-3 min-[675px]:px-6 text-center font-medium text-gray-900 whitespace-nowrap">
@@ -244,7 +238,7 @@ const Users = () => {
                     <td className="px-1 py-3 min-[550px]:px-3 min-[675px]:px-6 text-center">
                       {user.unit?.name || "-"}
                     </td>
-                    <td className="px-1 py-3 min-[550px]:px-3 min-[675px]:px-6 text-center">
+                    <td className="px-1 py-3 min-[550px]:px-3 min-[675px]:px-6 text-center hidden md:table-cell">
                       {user.position?.name || "-"}
                     </td>
                     <td className="px-1 py-3 min-[550px]:px-3min-[675px]:px-6">

@@ -52,7 +52,7 @@ const Login = () => {
     <section>
       <div
         style={{ backgroundImage: `url(${loginBgImg})` }}
-        className="h-[80vh] sm:h-screen w-full bg-no-repeat bg-cover max-lg:bg-top sm:bg-fixed relative fontRoboto"
+        className="h-screen w-full bg-no-repeat bg-cover max-lg:bg-top sm:bg-fixed relative fontRoboto"
       >
         <ParticlesComponent id="tsparticles-custom" />
         <div
