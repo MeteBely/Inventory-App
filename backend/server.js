@@ -8,6 +8,7 @@ const port = process.env.PORT || 5000;
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 connectDB();
 
