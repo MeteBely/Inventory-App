@@ -48,13 +48,19 @@ const Users = () => {
 
   const createSampleUserHandler = async (e) => {
     e.preventDefault();
-    try {
-      const data = await createSampleUser().unwrap();
-      console.log(data);
-      navigate(`/user/${data._id}`);
-    } catch (error) {
-      console.error("Error creating user:", error);
-      toast.error("Personel olusturulurken hata ile karsilasildi!");
+    if (users[users.length - 1].identificationNumber !== undefined) {
+      try {
+        const data = await createSampleUser().unwrap();
+        console.log(data);
+        navigate(`/user/${data._id}`);
+      } catch (error) {
+        console.error("Error creating user:", error);
+        toast.error("Personel olusturulurken hata ile karsilasildi!");
+      }
+    } else {
+      toast.error(
+        "Lütfen daha once oluşturduğunuz kullanicinin bilgilerini tamamlayiniz!"
+      );
     }
   };
 

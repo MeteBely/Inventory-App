@@ -132,6 +132,9 @@ const updateUser = asyncHandler(async (req, res) => {
       throw new Error("User not found with this id");
     }
   } catch (error) {
+    if (error.code === 11000) {
+      throw new Error("Duplicate identity number");
+    }
     console.log(error);
   }
 });

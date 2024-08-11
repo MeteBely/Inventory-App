@@ -20,7 +20,7 @@ const User = () => {
     error,
     refetch,
   } = useGetUserDetailsQuery(userId);
-  const [updateUser, { isLoading: loadingUpdate }] =
+  const [updateUser, { isLoading: loadingUpdate, error: errorUpdate }] =
     useUpdateUserDetailsMutation();
 
   const navigate = useNavigate();
@@ -52,13 +52,23 @@ const User = () => {
             values.position.slice(1).toLowerCase(),
           isWorking: values.isWorking,
         };
-        await updateUser(updatedUser);
-        refetch();
-        navigate("/users");
-        toast.success("Personel başasiyla güncellendi!");
+        const res = await updateUser(updatedUser);
+        if (res && res.error && res.error.status === 500) {
+          toast.error(
+            "Halihazirda bir personelin id'sini farkli bir personelin id'si olarak girmemeye dikkat ediniz!"
+          );
+        } else {
+          refetch();
+          navigate("/users");
+          toast.success("Personel başarıyla güncellendi!");
+        }
       }
     } catch (err) {
-      toast.error("Kullanici güncellenme sirasinda hata ile karsilasildi!");
+      if (err.code === 11000) {
+        toast.error("Girdiğiniz kimlik numarasi zaten mevcut!");
+      } else {
+        toast.error("Kullanici güncellenme sirasinda hata ile karsilasildi!");
+      }
       console.log(err);
     }
   };

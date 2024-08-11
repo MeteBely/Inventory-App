@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema(
     },
     identificationNumber: {
       type: Number,
+      unique: true,
     },
     maritalStatus: {
       type: Boolean,
